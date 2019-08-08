@@ -29,102 +29,95 @@ public class NeuralNetwork {
         this.leaningRate = 0.1;
     }
 
-    void backpropagation(double[][] inputs, double[][] target){
-        System.out.println("Feedforward");
-        System.out.println();
-        System.out.println("INPUT -> HIDDEN");
-        System.out.println();
-        System.out.println("Input");
+    void train(double[][] inputs, double[][] target){
+
         Matrix input = new Matrix(inputs);
-        System.out.println("Result multiply");
         Matrix hidden = Matrix.multiply(this.weigthInputHidden, input);
-        hidden.print();
-        System.out.println("Bias");
         hidden = Matrix.add(hidden, this.biasInputHidden);
-        hidden.print();
-        System.out.println("Activation function");
         runSigmoid(hidden);
-        hidden.print();
-        System.out.println();
-        System.out.println("HIDDEN -> OUTPUT");
-        System.out.println();
-        System.out.println("Call multiply");
+
         Matrix output = Matrix.multiply(this.weigthHiddenOutput, hidden);
-        System.out.println("Result multiply");
-        output.print();
-        System.out.println("BIAS");
         output = Matrix.add(output, this.biasHiddenOutput);
-        output.print();
-        System.out.println("Activation function");
         runSigmoid(output);
         output.print();
-        System.out.println("END Feedforward");
-        System.out.println();
-        System.out.println("Backpropagation");
-        System.out.println();
 
-        System.out.println("Output -> Hidden");
+//        System.out.println("Backpropagation");
+//        System.out.println("Output -> Hidden");
         Matrix expected = new Matrix(target);
 
-        System.out.println("Output error");
+//        System.out.println("Output error");
         Matrix outputError = Matrix.subtract(expected, output);
-        outputError.print();
+//        outputError.print();
 
-        System.out.println("Derivada output");
+//        System.out.println("Derivada output");
         Matrix derivadaOutput = runDsigmoid(output);
-        derivadaOutput.print();
+//        derivadaOutput.print();
 
-        System.out.println("Hidden Transpose");
+//        System.out.println("Hidden Transpose");
         Matrix hiddenT = Matrix.transpose(hidden);
-        hiddenT.print();
+//        hiddenT.print();
 
-        System.out.println("Gradient");
+//        System.out.println("Gradient");
         Matrix gradient = Matrix.hadamard(derivadaOutput, outputError);
         gradient = Matrix.escalarMultiply(gradient, this.leaningRate);
-        gradient.print();
+//        gradient.print();
 
-        System.out.println("Adjust bias o->h");
+//        System.out.println("Adjust bias o->h");
         this.biasHiddenOutput = Matrix.add(this.biasHiddenOutput, gradient);
-        this.biasHiddenOutput.print();
+//        this.biasHiddenOutput.print();
 
-        System.out.println("Adjust weigths o->h");
+//        System.out.println("Adjust weigths o->h");
         Matrix weigthsHiddenOutputDeltas = Matrix.multiply(gradient, hiddenT);
         this.weigthHiddenOutput = Matrix.add(this.weigthHiddenOutput, weigthsHiddenOutputDeltas);
-        this.weigthHiddenOutput.print();
+//        this.weigthHiddenOutput.print();
 
-        System.out.println();
+//        System.out.println();
 
-        System.out.println("Hidden -> Input");
+//        System.out.println("Hidden -> Input");
         Matrix weigthsHiddenOutputT = Matrix.transpose(this.weigthHiddenOutput);
 
-        System.out.println("Hidden error");
+//        System.out.println("Hidden error");
         Matrix hiddenError = Matrix.multiply(weigthsHiddenOutputT, outputError);
-        hiddenError.print();
+//        hiddenError.print();
 
-        System.out.println("Derivada hidden");
+//        System.out.println("Derivada hidden");
         Matrix derivadaHidden = runDsigmoid(hidden);
-        derivadaHidden.print();
+//        derivadaHidden.print();
 
-        System.out.println("Input Transpose");
+//        System.out.println("Input Transpose");
         Matrix inputT = Matrix.transpose(input);
-        inputT.print();
+//        inputT.print();
 
-        System.out.println("Hidden gradient");
+//        System.out.println("Hidden gradient");
         Matrix gradientHidden = Matrix.hadamard(derivadaHidden, derivadaHidden);
         gradientHidden = Matrix.escalarMultiply(gradientHidden, this.leaningRate);
-        gradientHidden.print();
+//        gradientHidden.print();
 
-        System.out.println("Adjust bias i->h");
+//        System.out.println("Adjust bias i->h");
         this.biasInputHidden = Matrix.add(this.biasInputHidden, gradientHidden);
-        this.biasInputHidden.print();
+//        this.biasInputHidden.print();
 
-        System.out.println("Adjust weigths h->i");
+//        System.out.println("Adjust weigths h->i");
         Matrix weigthsInputHiddenDeltas = Matrix.multiply(gradientHidden, inputT);
         this.weigthInputHidden = Matrix.add(this.weigthInputHidden, weigthsInputHiddenDeltas);
-        this.weigthInputHidden.print();
+//        this.weigthInputHidden.print();
+    }
 
-        System.out.println();
-        System.out.println("END");
+    double[][] predict(double[][] arr){
+        //Input -> hidden
+        Matrix input = new Matrix(arr);
+
+        Matrix hidden = Matrix.multiply(this.weigthInputHidden, input);
+        hidden = Matrix.add(hidden, this.biasInputHidden);
+
+        runSigmoid(hidden);
+
+        //Hidden -> output
+        Matrix output = Matrix.multiply(this.weigthHiddenOutput, hidden);
+        output = Matrix.add(output, this.biasHiddenOutput);
+        runSigmoid(output);
+
+        return output.getMatrix();
     }
 
     static Matrix runSigmoid(Matrix m){

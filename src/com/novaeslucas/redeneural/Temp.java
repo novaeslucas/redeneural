@@ -2,16 +2,26 @@ package com.novaeslucas.redeneural;
 
 public class Temp {
 
-    //1 - Criar matriz com numeros randomicos
     public static void main(String[] args) {
-        NeuralNetwork nn = new NeuralNetwork(2,3,2);
+        NeuralNetwork nn = new NeuralNetwork(4,3,1);
         System.out.println("Inputs");
-        double[][] inputs = {{1.0},{1.0}};
+        double[][] inputs = {{Math.random()},{Math.random()},{Math.random()},{Math.random()}};
         print(inputs);
         System.out.println("Target");
-        double[][] target = {{0.0},{0.0}};
+        double[][] target = {{0.0}};
         print(target);
-        nn.backpropagation(inputs, target);
+        
+        while (nn.predict(inputs)[0][0] > 0.001){
+            train(nn, inputs, target);
+        }
+        System.out.println("output");
+        print(nn.predict(inputs));
+    }
+
+    static void train(NeuralNetwork nn, double[][] inputs, double[][] target){
+        for (int i = 0; i < 10000; i++){
+            nn.train(inputs, target);
+        }
     }
 
     static void print(double[][] arr){
