@@ -1,6 +1,6 @@
 package com.novaeslucas.redeneural;
 
-public class Temp {
+public class Main {
 
     public static void main(String[] args) {
         NeuralNetwork nn = new NeuralNetwork(4,3,1);
@@ -10,7 +10,7 @@ public class Temp {
         System.out.println("Target");
         double[][] target = {{0.0}};
         print(target);
-        
+
         while (nn.predict(inputs)[0][0] > 0.001){
             train(nn, inputs, target);
         }
