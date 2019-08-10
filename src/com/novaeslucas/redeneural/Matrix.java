@@ -13,10 +13,40 @@ public class Matrix {
         this.cols = cols;
         this.matrix = new double[this.rows][this.cols];
         if(randomize){
-            this.randomize();
+            for (int i = 0; i < this.rows; i++){
+                for (int j = 0; j < this.cols; j++){
+                    matrix[i][j] = Math.random()*2-1;
+                }
+            }
         }else{
-            this.create();
+            for (int i = 0; i < this.rows; i++){
+                for (int j = 0; j < this.cols; j++){
+                    matrix[i][j] = 0.0;
+                }
+            }
         }
+    }
+
+    static Matrix arrayToMatrix(double[] arr){
+        Matrix matrix = new Matrix(arr.length, 1, false);
+        for (int i = 0; i < matrix.getRows(); i++){
+            for (int j = 0; j < matrix.getCols(); j++){
+                matrix.matrix[i][j] = arr[i];
+            }
+        }
+        return matrix;
+    }
+
+    static double[] matrixToArray(Matrix matrix){
+        double[] arr = new double[matrix.getRows()*matrix.getCols()];
+        int k = 0;
+        for (int i = 0; i < matrix.getRows(); i++){
+            for (int j = 0; j < matrix.getCols(); j++){
+                arr[k] = matrix.matrix[i][j];
+                k++;
+            }
+        }
+        return arr;
     }
 
     Matrix(double[][] arr){
