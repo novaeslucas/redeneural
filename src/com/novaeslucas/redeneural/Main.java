@@ -8,7 +8,7 @@ public class Main {
         double[][] inputs = {{1.0,1.0},{1.0,0.0},{0.0,0.1},{0.0,0.0}};
         //TARGETS
         double[][] target = {{0.0},{1.0},{1.0},{0.0}};
-        
+
         double[] arr1 = {0.0,0.0};
         double[] arr2 = {1.0,0.0};
         double predict1 = nn.predict(arr1)[0];

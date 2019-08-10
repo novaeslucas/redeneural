@@ -1,6 +1,6 @@
 package com.novaeslucas.redeneural;
 
-public class Matrix {
+class Matrix {
 
     private int rows;
 
@@ -49,37 +49,6 @@ public class Matrix {
         return arr;
     }
 
-    Matrix(double[][] arr){
-        this.rows = arr.length;
-        this.cols = arr[0].length;
-        this.matrix = new double[this.rows][this.cols];
-        this.createFromArray(arr);
-    }
-
-    private void randomize(){
-        for (int i = 0; i < this.rows; i++){
-            for (int j = 0; j < this.cols; j++){
-                this.matrix[i][j] = Math.random()*2-1;
-            }
-        }
-    }
-
-    private void createFromArray(double[][] arr){
-        for (int i = 0; i < this.rows; i++){
-            for (int j = 0; j < this.cols; j++){
-                this.matrix[i][j] = arr[i][j];
-            }
-        }
-    }
-
-    private void create(){
-        for (int i = 0; i < this.rows; i++){
-            for (int j = 0; j < this.cols; j++){
-                this.matrix[i][j] = Math.floor(Math.random()*10);
-            }
-        }
-    }
-
     void print(){
         for (int i = 0; i < this.rows; i++){
             for (int j = 0; j < this.cols; j++){
@@ -90,17 +59,17 @@ public class Matrix {
     }
 
     static Matrix add(Matrix a, Matrix b){
-        double[][] result = new double[a.getRows()][a.getCols()];
-        for (int i = 0; i < a.getRows(); i++){
-            for (int j = 0; j < a.getCols(); j++){
-                result[i][j] = a.matrix[i][j] + b.matrix[i][j];
+        Matrix m = new Matrix(a.getRows(), a.getCols(), false);
+        for (int i = 0; i < a.getRows(); i++) {
+            for (int j = 0; j < a.getCols(); j++) {
+                m.matrix[i][j] = a.matrix[i][j] + b.matrix[i][j];
             }
         }
-        return new Matrix(result);
+        return m;
     }
 
     static Matrix multiply(Matrix a, Matrix b){
-        double[][] result = new double[a.getRows()][b.getCols()];
+        Matrix m = new Matrix(a.getRows(), b.getCols(), false);
         for (int i = 0; i < a.getRows(); i++){
             for (int j = 0; j < b.getCols(); j++){
                 double sum = 0;
@@ -108,77 +77,61 @@ public class Matrix {
                     double product = a.matrix[i][k] * b.matrix[k][j];
                     sum += product;
                 }
-                result[i][j] = sum;
+                m.matrix[i][j] = sum;
             }
         }
-        return new Matrix(result);
+        return m;
     }
 
     static Matrix transpose(Matrix a){
-        double[][] result = new double[a.getCols()][a.getRows()];
+        Matrix m = new Matrix(a.getCols(), a.getRows(), false);
         for (int i = 0; i < a.getCols(); i++){
             for (int j = 0; j < a.getRows(); j++){
-                result[i][j] = a.getMatrix()[j][i];
+                m.matrix[i][j] = a.matrix[j][i];
             }
         }
-
-        return new Matrix(result);
+        return m;
     }
 
     static Matrix escalarMultiply(Matrix a, double escalar){
-        double[][] result = new double[a.getRows()][a.getCols()];
+        Matrix m = new Matrix(a.getRows(), a.getCols(), false);
         for (int i = 0; i < a.getRows(); i++){
             for (int j = 0; j < a.getCols(); j++){
-                result[i][j] = a.getMatrix()[i][j] * escalar;
+                m.matrix[i][j] = a.matrix[i][j] * escalar;
             }
         }
-
-        return new Matrix(result);
+        return m;
     }
 
     static Matrix hadamard(Matrix a, Matrix b){
-        double[][] result = new double[a.getRows()][a.getCols()];
+        Matrix m = new Matrix(a.getRows(), a.getCols(), false);
         for (int i = 0; i < a.getRows(); i++){
             for (int j = 0; j < a.getCols(); j++){
-                result[i][j] = a.getMatrix()[i][j] * b.getMatrix()[i][j];
+                m.matrix[i][j] = a.getMatrix()[i][j] * b.getMatrix()[i][j];
             }
         }
-
-        return new Matrix(result);
+        return m;
     }
 
     static Matrix subtract(Matrix a, Matrix b){
-        double[][] result = new double[a.getRows()][a.getCols()];
+        Matrix m = new Matrix(a.getRows(), a.getCols(), false);
         for (int i = 0; i < a.getRows(); i++){
             for (int j = 0; j < a.getCols(); j++){
-                result[i][j] = a.getMatrix()[i][j] - b.getMatrix()[i][j];
+                m.matrix[i][j] = a.getMatrix()[i][j] - b.getMatrix()[i][j];
             }
         }
-
-        return new Matrix(result);
+        return m;
     }
 
-    public int getRows() {
+    int getRows() {
         return rows;
     }
 
-    public void setRows(int rows) {
-        this.rows = rows;
-    }
-
-    public int getCols() {
+    int getCols() {
         return cols;
     }
 
-    public void setCols(int cols) {
-        this.cols = cols;
-    }
-
-    public double[][] getMatrix() {
+    double[][] getMatrix() {
         return matrix;
-    }
-
-    public void setMatrix(double[][] matrix) {
-        this.matrix = matrix;
     }
 }

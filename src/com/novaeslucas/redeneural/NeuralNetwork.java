@@ -1,12 +1,6 @@
 package com.novaeslucas.redeneural;
 
-public class NeuralNetwork {
-
-    private int inputNodes;
-
-    private int hiddenNodes;
-
-    private int outputNodes;
+class NeuralNetwork {
 
     private Matrix biasInputHidden;
 
@@ -19,13 +13,10 @@ public class NeuralNetwork {
     private double leaningRate;
 
     NeuralNetwork(int inputNodes, int hiddenNodes, int outputNodes){
-        this.inputNodes = inputNodes;
-        this.hiddenNodes = hiddenNodes;
-        this.outputNodes = outputNodes;
-        this.biasInputHidden = new Matrix(this.hiddenNodes, 1, true);
-        this.biasHiddenOutput = new Matrix(this.outputNodes, 1, true);
-        this.weigthInputHidden = new Matrix(this.hiddenNodes, this.inputNodes, true);
-        this.weigthHiddenOutput = new Matrix(this.outputNodes, this.hiddenNodes, true);
+        this.biasInputHidden = new Matrix(hiddenNodes, 1, true);
+        this.biasHiddenOutput = new Matrix(outputNodes, 1, true);
+        this.weigthInputHidden = new Matrix(hiddenNodes, inputNodes, true);
+        this.weigthHiddenOutput = new Matrix(outputNodes, hiddenNodes, true);
         this.leaningRate = 0.1;
     }
 
@@ -90,20 +81,19 @@ public class NeuralNetwork {
         return Matrix.matrixToArray(output);
     }
 
-    static Matrix runSigmoid(Matrix m){
+    private static void runSigmoid(Matrix m){
         for (int i = 0; i < m.getRows(); i++){
             for (int j = 0; j < m.getCols(); j++){
                 m.getMatrix()[i][j] = sigmoidFunction(m.getMatrix()[i][j]);
             }
         }
-        return m;
     }
 
-    static double sigmoidFunction(double x){
+    private static double sigmoidFunction(double x){
         return 1 / (1 + Math.exp(-x));
     }
 
-    static Matrix runDsigmoid(Matrix m){
+    private static Matrix runDsigmoid(Matrix m){
         for (int i = 0; i < m.getRows(); i++){
             for (int j = 0; j < m.getCols(); j++){
                 m.getMatrix()[i][j] = dSigmoidFunction(m.getMatrix()[i][j]);
@@ -112,7 +102,7 @@ public class NeuralNetwork {
         return m;
     }
 
-    static double dSigmoidFunction(double x){
+    private static double dSigmoidFunction(double x){
         return x * (1 - x);
     }
 }
