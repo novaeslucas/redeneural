@@ -10,8 +10,8 @@ public class Main {
     public static void main(String[] args) {
         NeuralNetwork nn = new NeuralNetwork(10,3,1);
         double[] inputTest = {Math.random()*10 > 5 ? 1.0 : 0.0,Math.random()*10 > 5 ? 1.0 : 0.0,Math.random()*10 > 5 ? 1.0 : 0.0,Math.random()*10 > 5 ? 1.0 : 0.0,Math.random()*10 > 5 ? 1.0 : 0.0,Math.random()*10 > 5 ? 1.0 : 0.0,Math.random()*10 > 5 ? 1.0 : 0.0,Math.random()*10 > 5 ? 1.0 : 0.0,Math.random()*10 > 5 ? 1.0 : 0.0,Math.random()*10 > 5 ? 1.0 : 0.0};
-        for (int i = 0; i < inputTest.length; i++){
-            System.out.print(inputTest[i] + " ");
+        for (double v : inputTest) {
+            System.out.print(v + " ");
         }
         System.out.println();
         for (int i = 0; i < 100000; i++){
@@ -21,7 +21,7 @@ public class Main {
         System.out.println(nn.predict(inputTest)[0]);
     }
 
-    static double[][] getInputs(){
+    private static double[][] getInputs(){
         double[][] inputs = new double[704][10];
         try{
             BufferedReader br = new BufferedReader(new FileReader("autism_train_set.csv"));
@@ -41,7 +41,7 @@ public class Main {
         return inputs;
     }
 
-    static double[][] getOutputs(){
+    private static double[][] getOutputs(){
         double[][] outputs = new double[704][1];
         try{
             BufferedReader br = new BufferedReader(new FileReader("autism_output.csv"));
