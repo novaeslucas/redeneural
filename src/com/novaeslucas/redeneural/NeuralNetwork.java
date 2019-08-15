@@ -76,7 +76,7 @@ class NeuralNetwork {
         Matrix output = Matrix.multiply(this.weigthHiddenOutput, hidden);
         output = Matrix.add(output, this.biasHiddenOutput);
         runSigmoid(output);
-        output.print();
+//        output.print();
 
         return Matrix.matrixToArray(output);
     }
