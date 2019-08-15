@@ -4,21 +4,55 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Main {
 
     public static void main(String[] args) {
+        long time1 = System.currentTimeMillis();
         NeuralNetwork nn = new NeuralNetwork(10,3,1);
-        double[] inputTest = {Math.random()*10 > 5 ? 1.0 : 0.0,Math.random()*10 > 5 ? 1.0 : 0.0,Math.random()*10 > 5 ? 1.0 : 0.0,Math.random()*10 > 5 ? 1.0 : 0.0,Math.random()*10 > 5 ? 1.0 : 0.0,Math.random()*10 > 5 ? 1.0 : 0.0,Math.random()*10 > 5 ? 1.0 : 0.0,Math.random()*10 > 5 ? 1.0 : 0.0,Math.random()*10 > 5 ? 1.0 : 0.0,Math.random()*10 > 5 ? 1.0 : 0.0};
-        for (double v : inputTest) {
-            System.out.print(v + " ");
-        }
+        int numOfInputsTests = 100;
+        double[][] inputsTests = getInputsTests(numOfInputsTests);
+        //double[] inputTest = {Math.random()*10 > 5 ? 1.0 : 0.0,Math.random()*10 > 5 ? 1.0 : 0.0,Math.random()*10 > 5 ? 1.0 : 0.0,Math.random()*10 > 5 ? 1.0 : 0.0,Math.random()*10 > 5 ? 1.0 : 0.0,Math.random()*10 > 5 ? 1.0 : 0.0,Math.random()*10 > 5 ? 1.0 : 0.0,Math.random()*10 > 5 ? 1.0 : 0.0,Math.random()*10 > 5 ? 1.0 : 0.0,Math.random()*10 > 5 ? 1.0 : 0.0};
         System.out.println();
         for (int i = 0; i < 100000; i++){
-            int index = (int) Math.floor(Math.random()*4);
+            int index = (int) Math.floor(Math.random()*704);
+            System.out.print("index: " + index + " | iteracao num. " + i + " | ");
+            System.out.print("input: ");
+            for (double d : getInputs()[index]){
+                System.out.print((int) d + ";");
+            }
+            System.out.print(" | output: ");
+            for (double d : getOutputs()[index]){
+                System.out.print(d + " ");
+                System.out.println();
+            }
             nn.train(getInputs()[index], getOutputs()[index]);
         }
-        System.out.println(nn.predict(inputTest)[0]);
+        System.out.println();
+        System.out.println("Testando entradas aleatórias");
+        for (int i = 0; i < numOfInputsTests; i++) {
+            for (double d : inputsTests[i]){
+                System.out.print((int) d + ";");
+            }
+            System.out.print(" Saída ");
+            nn.predict(inputsTests[i]);
+            System.out.println();
+        }
+        long time2 = System.currentTimeMillis();
+        System.out.println(new SimpleDateFormat("mm:ss").format(new Date(time2 - time1)));
+
+    }
+
+    private static double[][] getInputsTests(int numOfInputsTests){
+        double[][] tests = new double[numOfInputsTests][10];
+        for (int i = 0; i < numOfInputsTests; i++){
+            for (int j = 0; j < 10; j++){
+                tests[i][j] = Math.random()*10 > 5 ? 1.0 : 0.0;
+            }
+        }
+        return tests;
     }
 
     private static double[][] getInputs(){
